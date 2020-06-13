@@ -6,14 +6,24 @@
 // Since BGA log shows from your perspective, the script must need to know which player is you.
 let your_name = "ezoe" ;
 
+
+// grab necessary DOM elements.
+let gamelogs = document.getElementById("gamelogs") ;
+let logs = gamelogs.childNodes ;
+
 // fixed header.
 let sgf_header = "(;FF[4]GM[6]CA[UTF-8]AP[GNU Backgammon:1.06.002]" ;
+
 // player names
 let players = document.getElementById("game_result").getElementsByClassName("playername") ;
 
+// retrieve the player names.
+let first_player = logs[2].textContent.match(/(.+) rolls/)[1] ;
+let second_player = (first_player === players[0].textContent ? players[1].textContent : players[0].textContent ) ;
 
 
-let sgf_names = "PW[" + players[0].text + "]PB[" + players[1].text + "]" ;
+
+let sgf_names = "PW[" + first_player + "]PB[" + second_player + "]" ;
 // nocube rule
 let sgf_rule = "RU[NoCube]\n" ;
 
@@ -24,7 +34,7 @@ let current_player = false ;
 
 // helper function to translate opponent's perspective.
 // BGA display opponent's point from your perspective so it must be inverted.
-let is_your_1st_player = ( players[0] === your_name ) ;
+let is_your_1st_player = ( first_player === your_name ) ;
 function translate_point( point )
 {
     // It's you. No need to translate.
@@ -38,8 +48,6 @@ function translate_point( point )
 
 // buffer for accumulating the log
 let sgf_buffer = "" ;
-let gamelogs = document.getElementById("gamelogs") ;
-let logs = gamelogs.childNodes ;
 
 // parse one element per iterate.
 for ( let i = 0 ; i != logs.length ; ++i )
