@@ -18,23 +18,30 @@ let sgf_header = "(;FF[4]GM[6]CA[UTF-8]AP[GNU Backgammon:1.06.002]" ;
 let players = document.getElementById("game_result").getElementsByClassName("playername") ;
 
 // retrieve the player names.
-let first_player = logs[2].textContent.match(/(.+) rolls/)[1] ;
+let first_next_player = 0
+while( logs[first_next_player].textContent !== "Next player" )
+    ++first_next_player ;
+let first_player = logs[first_next_player+1].textContent.match(/(.+) rolls/)[1] ;
 let second_player = (first_player === players[0].textContent ? players[1].textContent : players[0].textContent ) ;
 
+// you are always black for the same perspective regardless of your first/second hand.
+let is_your_1st_player = ( first_player === your_name ) ;
+let first_color = is_your_1st_player ? "B" : "W" ;
+let second_color = is_your_1st_player ? "W" : "B" ;
 
-
-let sgf_names = "PW[" + first_player + "]PB[" + second_player + "]" ;
+let sgf_names = "PW[" + ( is_your_1st_player ? second_player : first_player ) + "]PB[" + your_name + "]" ;
 // nocube rule
 let sgf_rule = "RU[NoCube]\n" ;
 
-// iterate over the game logs and construct the SGF
-// true means white player, false means black player
-let current_player = false ;
 
+
+// true means white player, false means black player
+// fliped every time it see "Next player"
+// the initial value is the opposite because it will be fliped at first.
+let current_player = false ;
 
 // helper function to translate opponent's perspective.
 // BGA display opponent's point from your perspective so it must be inverted.
-let is_your_1st_player = ( first_player === your_name ) ;
 function translate_point( point )
 {
     // It's you. No need to translate.
@@ -46,11 +53,13 @@ function translate_point( point )
         return 25 - point ;
 }
 
+
 // buffer for accumulating the log
 let sgf_buffer = "" ;
 
+// iterate over the game logs and construct the SGF
 // parse one element per iterate.
-for ( let i = 0 ; i != logs.length ; ++i )
+for ( let i = 0 ; i !== logs.length ; ++i )
 {
     let value = logs[i] ;
 
@@ -64,7 +73,7 @@ for ( let i = 0 ; i != logs.length ; ++i )
         }
         // swap the player
         current_player = !current_player ;
-        sgf_buffer += ";" + (current_player ? "W" : "B") + "[" ;
+        sgf_buffer += ";" + (current_player ? first_color : second_color ) + "[" ;
         continue ;
     }
     // roll the dice
