@@ -4,7 +4,7 @@
 
 
 
-// Since BGA log shows from your perspective, the script must need to know which player is you.
+// Since BGA log describe from your perspective, the script must need to know which player is you.
 // modify this variable to your account's display name.
 let your_name = "your name" ;
 
@@ -38,8 +38,8 @@ let sgf_rule = "RU[NoCube]\n" ;
 
 
 // true means first player, false means second player
-// fliped every time it see "Next player"
-// the initial value is the opposite because it will be fliped at first.
+// flipped every time it see "Next player"
+// the initial value is the opposite because it will be flipped at first.
 let current_player = false ;
 
 // helper function to translate opponent's perspective.
