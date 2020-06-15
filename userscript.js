@@ -33,7 +33,10 @@ let second_color = is_your_1st_player ? "W" : "B" ;
 let sgf_names = "PW[" + ( is_your_1st_player ? second_player : first_player ) + "]PB[" + your_name + "]" ;
 
 // nocube rule
-let sgf_rule = "RU[NoCube]\n" ;
+let sgf_rule = "RU[NoCube]" ;
+
+// URL for this replay data
+let sgf_comment_url = "C[" + document.URL + "\n" ;
 
 
 
@@ -126,7 +129,7 @@ for ( let i = 0 ; i !== logs.length ; ++i )
 sgf_buffer += "])" ;
 
 // construct the full GNU Backgammon File(SGF format).
-sgf_text = sgf_header + sgf_names + sgf_rule + sgf_buffer ;
+sgf_text = sgf_header + sgf_names + sgf_rule + sgf_comment_url + sgf_buffer ;
 
 // display it.
 let textarea = document.createElement("textarea") ;
