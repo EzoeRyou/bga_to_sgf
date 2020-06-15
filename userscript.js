@@ -36,7 +36,7 @@ let sgf_names = "PW[" + ( is_your_1st_player ? second_player : first_player ) + 
 let sgf_rule = "RU[NoCube]" ;
 
 // URL for this replay data
-let sgf_comment_url = "C[" + document.URL + "\n" ;
+let sgf_comment_url = "C[" + document.URL + "]\n" ;
 
 
 
